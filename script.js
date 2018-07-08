@@ -21,9 +21,27 @@ funtion get_unique_values(data,column){
   for (var i = 0; i < data.length; i++) {
     _obj[training_data[i][column]] = training_data[i][column];
   }
+  return convert_to_array(_obj);
+}
+
+function convert_to_array(_obj){
   var _arr = []
   for (item in _obj) {
     arr.push(_obj[item]);
   }
   return arr;
+}
+
+function get_unique_labels_count(labels_list){
+  var _obj = {}
+  for(var i=0;i<Y.length;i++){
+  if(_obj[Y[i]]==undefined){
+  	_obj[Y[i]] = 1
+  }else{
+  	_obj[Y[i]] = _obj[Y[i]]+1;
+  }
+  }
+
+  return convert_to_array(_obj);
+
 }
