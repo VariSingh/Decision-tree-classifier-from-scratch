@@ -34,11 +34,11 @@ function get_unique_values(arr){
 
 function get_unique_labels_count(labels_list){
   var _obj = {}
-  for(var i=0;i<Y.length;i++){
-  if(_obj[Y[i]]==undefined){
-  	_obj[Y[i]] = 1
+  for(var i=0;i<labels_list.length;i++){
+  if(_obj[labels_list[i]]==undefined){
+  	_obj[labels_list[i]] = 1
   }else{
-  	_obj[Y[i]] = _obj[Y[i]]+1;
+  	_obj[labels_list[i]] = _obj[labels_list[i]]+1;
   }
   }
   return _obj;
@@ -48,21 +48,24 @@ function gini_impurity(labels_list){
 unique_labels_count = get_unique_labels_count(labels_list);
 impurity = 1;
 for(key in unique_labels_count){
-  probability = unique_labels_count[key]/Object.keys(unique_labels_count).length;
-  impurity = impurity - Math.sqrt(probability);
+  probability = unique_labels_count[key]/labels_list.length;
+  impurity = impurity - Math.pow(probability,2);
 }
+return impurity;
 }
 
-function best_split(arr){
+function best_split(arr,labels){
   var best_gain = 0;
   var best_question = "";
-  var impurity = gini_impurity(arr);//on first run impurity of whole dataset will be calculated
+  var impurity = gini_impurity(labels);//on first run impurity of whole dataset will be calculated
   for(var i=0;i<arr[0].length;i++){
     for(var j=0;j<arr.length;j++){
-      ask_question(arr[i][j],arr,i);//arr[i][j] is each value in a particular column
+      ask_question(arr[j][i],arr,i);//arr[i][j] is each value in a particular column
     }
   }
 }
+
+best_split(X,Y);
 
 
 
@@ -85,11 +88,14 @@ var operators = {
 };
 
     for(var n=0;n<arr.length;n++){
-        if(operator[op](arr[n][column],feature)){
-          right_branch.push(arr[n][column]);
-        }else{
+        if(operators[op](arr[n][column],feature)){
           left_branch.push(arr[n][column]);
+        }else{
+          right_branch.push(arr[n][column]);
         }
     }
+    console.log("feature ",feature);
+    console.log("left_branch ",left_branch);
+    console.log("right_branch ",right_branch);
 
 }
