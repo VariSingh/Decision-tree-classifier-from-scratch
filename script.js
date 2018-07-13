@@ -60,16 +60,21 @@ function best_split(arr,labels){
   var impurity = gini_impurity(labels);//on first run impurity of whole dataset will be calculated
   for(var i=0;i<arr[0].length;i++){
     for(var j=0;j<arr.length;j++){
-      ask_question(arr[j][i],arr,i);//arr[i][j] is each value in a particular column
+      var obj = ask_question_and_split(arr[j][i],arr,i);//arr[i][j] is each value in a particular column
+      console.log("obj ",obj);
+      //information_gain = info_gain(feature,left_branch,right_branch,impurity);
     }
   }
 }
 
 best_split(X,Y);
 
+function info_gain(feature,left_branch,right_branch,current_impurity){
+  probability = left_branch.length/(left_branch.length+right_branch.length)
+  return current_impurity - probability*gini_impurity(left_branch) - (1-probability)*gini_impurity(right_branch);
+}
 
-
-function ask_question(feature,arr,column){
+function ask_question_and_split(feature,arr,column){
 
    var isNumber = !isNaN(parseFloat(feature)) && isFinite(feature);
 //if feature is a number than we check >=
@@ -94,8 +99,8 @@ var operators = {
           right_branch.push(arr[n][column]);
         }
     }
-    console.log("feature ",feature);
-    console.log("left_branch ",left_branch);
-    console.log("right_branch ",right_branch);
-
+    return {
+      "left_branch":left_branch,
+      "right_branch":right_branch
+    }
 }
